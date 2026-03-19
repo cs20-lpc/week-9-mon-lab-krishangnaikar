@@ -1,6 +1,8 @@
 template <typename T>
 LinkedQueue<T>::LinkedQueue() {
-    // TODO
+    head = nullptr;
+    last = nullptr;
+    this->length = 0;
 }
 
 template <typename T>
@@ -24,32 +26,75 @@ LinkedQueue<T>::~LinkedQueue() {
 
 template <typename T>
 T LinkedQueue<T>::back() const {
-    // TODO
+    if (last == nullptr) {
+        throw string("Queue is empty");
+    }
+    return last->value;
 }
 
 template <typename T>
 void LinkedQueue<T>::clear() {
-    // TODO
+    Node* temp;
+    Node* current = head;
+    while (current != nullptr) {
+        temp = current;
+        current = current->next;
+        delete temp;
+    }
+    head = nullptr;
+    last = nullptr;
+    this->length = 0;
 }
 
 template <typename T>
 void LinkedQueue<T>::copy(const LinkedQueue<T>& copyObj) {
-    // TODO
+    if (copyObj.head == nullptr) {
+        head = nullptr;
+        last = nullptr;
+    } else {
+        head = new Node(copyObj.head->value);
+        Node* currentCopy = copyObj.head->next;
+        Node* currentThis = head;
+        while (currentCopy != nullptr) {
+            currentThis->next = new Node(currentCopy->value);
+            currentThis = currentThis->next;
+            currentCopy = currentCopy->next;
+        }
+        last = currentThis;
+    }
+    this->length = copyObj.getLength();
 }
 
 template <typename T>
 void LinkedQueue<T>::dequeue() {
-    // TODO
+    if (head == nullptr) {
+        throw string("Queue is empty");
+    }
+    Node* temp = head;
+    head = head->next;
+    delete temp;
+    this->length--;
 }
 
 template <typename T>
 void LinkedQueue<T>::enqueue(const T& elem) {
-    // TODO
+    Node* newNode = new Node(elem);
+    if (last != nullptr) {
+        last->next = newNode;
+    }
+    last = newNode;
+    if (head == nullptr) {
+        head = newNode;
+    }
+    this->length++;
 }
 
 template <typename T>
 T LinkedQueue<T>::front() const {
-    // TODO
+    if (head == nullptr) {
+        throw string("Queue is empty");
+    }
+    return head->value;
 }
 
 template <typename T>
